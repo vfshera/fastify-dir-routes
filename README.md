@@ -1,6 +1,6 @@
 # Fastify Directory Based Routes
 
-A Fastify plugin enabling file system-based routing, utilizing directories to specify URL segments matched by the router.
+A Fastify plugin that enables file system-based routing, utilizing directories to specify URL segments matched by the router.
 
 ## License
 
@@ -8,4 +8,4 @@ A Fastify plugin enabling file system-based routing, utilizing directories to sp
 
 ## Acknowledgements
 
-[fastify-file-routes](https://github.com/spa5k/fastify-file-routes) - Used as a starting point
+This project builds upon [fastify-file-routes](https://github.com/spa5k/fastify-file-routes)
