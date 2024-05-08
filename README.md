@@ -4,7 +4,7 @@ A Fastify plugin enabling file system-based routing, utilizing directories to sp
 
 ## License
 
-MIT
+[MIT](./LICENSE)
 
 ## Acknowledgements
 
