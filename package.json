@@ -11,8 +11,5 @@
   "license": "MIT",
   "devDependencies": {
     "@changesets/cli": "^2.27.1"
-  },
-  "dependencies": {
-    "changesets": "^1.0.2"
   }
 }
