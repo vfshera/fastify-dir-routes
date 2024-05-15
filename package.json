@@ -4,12 +4,16 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "build": "pnpm --filter=@vfshera/fastify-dir-routes build"
+    "build": "pnpm --filter=@vfshera/fastify-dir-routes build",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@changesets/cli": "^2.27.1"
+    "@changesets/cli": "^2.27.1",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "husky": "^9.0.11"
   }
 }
