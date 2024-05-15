@@ -3,6 +3,7 @@
   "private": "true",
   "version": "0.0.0",
   "description": "",
+  "type": "module",
   "scripts": {
     "build": "pnpm --filter=@vfshera/fastify-dir-routes build",
     "prepare": "husky"
