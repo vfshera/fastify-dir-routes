@@ -20,6 +20,12 @@ importers:
       husky:
         specifier: ^9.0.11
         version: 9.0.11
+      tsup:
+        specifier: ^8.0.2
+        version: 8.0.2(typescript@5.4.5)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
 
   directory-router:
     devDependencies:
