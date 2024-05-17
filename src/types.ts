@@ -1,13 +1,13 @@
 import type {
+  ContextConfigDefault,
   FastifyInstance,
+  FastifyReply,
+  FastifyRequest,
+  RawReplyDefaultExpression,
+  RawRequestDefaultExpression,
   RawServerBase,
   RawServerDefault,
-  RawRequestDefaultExpression,
-  RawReplyDefaultExpression,
-  ContextConfigDefault,
   RouteShorthandOptions,
-  FastifyRequest,
-  FastifyReply,
 } from "fastify";
 
 import type { RouteGenericInterface } from "fastify/types/route";
