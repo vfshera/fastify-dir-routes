@@ -22,14 +22,7 @@
     "dist"
   ],
   "lint-staged": {
-    "src/**/*.{js,ts}": [
-      "biome check --files-ignore-unknown=true",
-      "biome check --apply --no-errors-on-unmatched",
-      "biome check --apply --organize-imports-enabled=false --no-errors-on-unmatched",
-      "biome check --apply-unsafe --no-errors-on-unmatched",
-      "biome format --write --no-errors-on-unmatched",
-      "biome lint --apply --no-errors-on-unmatched"
-    ]
+    "src/**/*.{js,ts}": "biome check --apply --no-errors-on-unmatched"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.7.3",
