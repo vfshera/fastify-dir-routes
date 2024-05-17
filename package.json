@@ -10,6 +10,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup ./src/index.ts --format cjs,esm --dts",
+    "ts:example": "tsx watch ./examples/typescript/index.ts",
     "release": "pnpm run build && changeset publish",
     "lint": "tsc"
   },
@@ -19,12 +20,34 @@
   "files": [
     "dist"
   ],
+  "lint-staged": {
+    "src/**/*.{js,ts}": [
+      "biome check --files-ignore-unknown=true",
+      "biome check --apply --no-errors-on-unmatched",
+      "biome check --apply --organize-imports-enabled=false --no-errors-on-unmatched",
+      "biome check --apply-unsafe --no-errors-on-unmatched",
+      "biome format --write --no-errors-on-unmatched",
+      "biome lint --apply --no-errors-on-unmatched"
+    ]
+  },
   "devDependencies": {
-    "typescript": "^5.4.5",
-    "tsup": "^8.0.2",
+    "@biomejs/biome": "^1.7.3",
     "@changesets/cli": "^2.27.1",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
-    "husky": "^9.0.11"
+    "@types/node": "^20.12.12",
+    "fastify": "^4.27.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "tsup": "^8.0.2",
+    "tsx": "^4.10.3",
+    "typescript": "^5.4.5"
+  },
+  "peerDependencies": {
+    "fastify": ">=3.0.0"
+  },
+  "dependencies": {
+    "fastify-plugin": "^4.5.1",
+    "kleur": "^4.1.5"
   }
 }
