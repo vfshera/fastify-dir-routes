@@ -12,6 +12,7 @@
     "build": "tsup ./src/index.ts --format cjs,esm --dts",
     "ts:example": "tsx watch ./examples/typescript/index.ts",
     "release": "pnpm run build && changeset publish",
+    "pre-commit": "lint-staged",
     "lint": "tsc"
   },
   "keywords": [],
