@@ -2,8 +2,6 @@
 
 A Fastify plugin that enables file system-based routing, utilizing directories to specify URL segments matched by the router.
 
-# [WIP]: THIS PACKAGE IS IN EARLY DEVELOPMENT SO EXPECT BREAKING CHANGES
-
 ## Acknowledgements
 
 This project builds upon Great work from the following packages:
