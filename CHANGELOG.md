@@ -1,5 +1,11 @@
 # @vfshera/fastify-dir-routes
 
+## 0.2.0
+
+### Minor Changes
+
+- 9a6d1fb: Adds catch all name to route params
+
 ## 0.1.1
 
 ### Patch Changes
