@@ -1,103 +1,122 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { FastifyInstance, HTTPMethods, RouteHandlerMethod } from "fastify";
-import { pathToUrl } from "./transformers";
+import { extractCatchAll, pathToUrl } from "./transformers";
 
 import {
-  ALLOWED_EXTENSIONS,
-  ALLOWED_ROUTE_FILE,
-  HANGING_ROUTE,
+	ALLOWED_EXTENSIONS,
+	ALLOWED_ROUTE_FILE,
+	HANGING_ROUTE,
 } from "../consts";
 
 import type { RouteHandler } from "../types";
 
 const methods: HTTPMethods[] = [
-  "DELETE",
-  "GET",
-  "HEAD",
-  "PATCH",
-  "POST",
-  "PUT",
-  "OPTIONS",
+	"DELETE",
+	"GET",
+	"HEAD",
+	"PATCH",
+	"POST",
+	"PUT",
+	"OPTIONS",
 ];
 
-const isHangingRoute = (path: string) => {
-  return ALLOWED_EXTENSIONS.map((ext) =>
-    path.endsWith(`${HANGING_ROUTE}${ext}`)
-  ).some((isHanging) => isHanging);
-};
+function isHangingRoute(path: string) {
+	return ALLOWED_EXTENSIONS.map((ext) =>
+		path.endsWith(`${HANGING_ROUTE}${ext}`),
+	).some((isHanging) => isHanging);
+}
 
 function addRequestHandler(
-  module: Record<HTTPMethods, unknown>,
-  method: HTTPMethods,
-  server: FastifyInstance,
-  fileRouteServerPath: string
+	module: Record<HTTPMethods, unknown>,
+	method: HTTPMethods,
+	server: FastifyInstance,
+	fileRouteServerPath: string,
 ) {
-  const handler = module[method] as RouteHandler | undefined;
-  if (handler) {
-    server.log.debug(`${method} ${fileRouteServerPath}`);
-    const methodFunctionName = method.toLowerCase() as keyof Pick<
-      FastifyInstance,
-      "get" | "put" | "delete" | "head" | "post" | "options" | "patch"
-    >;
-    server[methodFunctionName](
-      fileRouteServerPath,
-      handler.opts || {},
-      handler as RouteHandlerMethod
-    );
-  }
+	const handler = module[method] as RouteHandler | undefined;
+	if (handler) {
+		server.log.debug(`${method} ${fileRouteServerPath}`);
+		const methodFunctionName = method.toLowerCase() as keyof Pick<
+			FastifyInstance,
+			"get" | "put" | "delete" | "head" | "post" | "options" | "patch"
+		>;
+
+		server[methodFunctionName](
+			fileRouteServerPath,
+			handler.opts || {},
+			handler as RouteHandlerMethod,
+		);
+	}
 }
 
 export async function registerRoutes(
-  fastify: FastifyInstance,
-  folder: string,
-  prefix = ""
+	fastify: FastifyInstance,
+	folder: string,
+	prefix = "",
 ): Promise<void> {
-  const registerRoutesFolders = fs
-    .readdirSync(folder, { withFileTypes: true })
-    .map(async (folderOrFile) => {
-      const currentPath = path.join(folder, folderOrFile.name);
+	const catchAllParamKeys = new Map<string, string>();
 
-      if (isHangingRoute(currentPath)) {
-        return;
-      }
+	const registerRoutesHandlers = fs
+		.readdirSync(folder, { withFileTypes: true })
+		.map(async (entry) => {
+			const currentPath = path.join(folder, entry.name);
 
-      const routeServerPath = pathToUrl(`${prefix}/${folderOrFile.name}`);
+			if (isHangingRoute(currentPath)) {
+				return;
+			}
 
-      if (folderOrFile.isDirectory()) {
-        if (
-          folderOrFile.name.startsWith(".") ||
-          folderOrFile.name.startsWith("_")
-        ) {
-          return;
-        }
+			const routeServerPath = pathToUrl(`${prefix}/${entry.name}`);
 
-        await registerRoutes(fastify, currentPath, routeServerPath);
-      } else if (folderOrFile.isFile()) {
-        const { ext, name } = path.parse(folderOrFile.name);
+			if (entry.isDirectory()) {
+				if (entry.name.startsWith(".") || entry.name.startsWith("_")) {
+					return;
+				}
 
-        if (name !== ALLOWED_ROUTE_FILE && !ALLOWED_EXTENSIONS.includes(ext)) {
-          return;
-        }
+				await registerRoutes(fastify, currentPath, routeServerPath);
+			} else if (entry.isFile()) {
+				const { ext, name } = path.parse(entry.name);
 
-        let fileRouteServerPath = prefix;
+				if (name !== ALLOWED_ROUTE_FILE && !ALLOWED_EXTENSIONS.includes(ext)) {
+					return;
+				}
 
-        if (fileRouteServerPath.length === 0) {
-          fileRouteServerPath = "/";
-        }
+				let fileRouteServerPath = prefix;
 
-        const module = await import(currentPath);
+				if (fileRouteServerPath.length === 0) {
+					fileRouteServerPath = "/";
+				}
 
-        for (const method of Object.values(methods)) {
-          addRequestHandler(
-            module,
-            method as HTTPMethods,
-            fastify,
-            fileRouteServerPath
-          );
-        }
-      }
-    });
+				const catchAllKey = extractCatchAll(currentPath);
 
-  await Promise.all(registerRoutesFolders);
+				if (fileRouteServerPath.endsWith("/*") && catchAllKey) {
+					const routePath = fileRouteServerPath.replace(/\/\*$/, "");
+
+					catchAllParamKeys.set(routePath, catchAllKey);
+				}
+
+				const module = await import(currentPath);
+
+				for (const method of Object.values(methods)) {
+					addRequestHandler(
+						module,
+						method as HTTPMethods,
+						fastify,
+						fileRouteServerPath,
+					);
+				}
+			}
+		});
+
+	fastify.addHook("onRequest", async (request, reply) => {
+		for (const [path, key] of catchAllParamKeys) {
+			if (request.url.startsWith(path)) {
+				request.params = {
+					...(request.params as Record<string, unknown>),
+					[key]: (request.params as Record<string, unknown>)["*"],
+				};
+			}
+		}
+	});
+
+	await Promise.all(registerRoutesHandlers);
 }
