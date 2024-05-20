@@ -1,4 +1,4 @@
-import type { RouteHandler } from "../../../../../src/types";
+import type { RouteHandler } from "src/types";
 
 export const GET: RouteHandler<{
   Params: { all: string };

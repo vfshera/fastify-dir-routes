@@ -10,7 +10,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup ./src/index.ts --format cjs,esm --dts",
-    "ts:example": "tsx watch ./examples/typescript/index.ts",
+    "ts:example": "tsx watch ./examples/typescript/server.ts",
     "release": "pnpm run build && changeset publish",
     "pre-commit": "lint-staged",
     "lint": "tsc"
