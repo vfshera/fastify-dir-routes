@@ -1,5 +1,11 @@
 # @vfshera/fastify-dir-routes
 
+## 0.2.1
+
+### Patch Changes
+
+- d124c53: Update package info
+
 ## 0.2.0
 
 ### Minor Changes

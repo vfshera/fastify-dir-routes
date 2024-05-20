@@ -1,6 +1,6 @@
 {
   "name": "@vfshera/fastify-dir-routes",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A Fastify plugin that enables file system-based routing, utilizing directories to specify URL segments matched by the router.",
   "publishConfig": {
     "access": "public"
