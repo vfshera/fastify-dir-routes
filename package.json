@@ -15,8 +15,21 @@
     "pre-commit": "lint-staged",
     "lint": "tsc"
   },
-  "keywords": [],
+  "keywords": [
+    "fastify-dir-routes",
+    "fastify",
+    "fastify-routing",
+    "directory-routing"
+  ],
   "author": "Franklin Shera",
+  "homepage": "https://github.com/vfshera/fastify-dir-routes#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vfshera/fastify-dir-routes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vfshera/fastify-dir-routes/issues"
+  },
   "license": "MIT",
   "files": [
     "dist"

@@ -130,7 +130,7 @@ export const GET: RouteHandler<{
 
 ```
 
-**Check the examples folder for more**
+[**Check the examples folder for more**](./examples/typescript/server.ts)
 
 ## Acknowledgements
 
