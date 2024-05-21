@@ -1,5 +1,12 @@
 # @vfshera/fastify-dir-routes
 
+## 0.2.2
+
+### Patch Changes
+
+- 5af53c0: add package exports
+- 123213e: biome ignore dist
+
 ## 0.2.1
 
 ### Patch Changes
