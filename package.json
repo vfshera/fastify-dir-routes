@@ -8,8 +8,15 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "tsup ./src/index.ts --format cjs,esm --dts",
+    "build": "tsup",
     "ts:example": "tsx watch ./examples/typescript/server.ts",
     "release": "pnpm run build && changeset publish",
     "pre-commit": "lint-staged",
