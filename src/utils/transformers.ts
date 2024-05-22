@@ -2,7 +2,7 @@ import path from "node:path";
 import { ALLOWED_ROUTE_FILE } from "../consts";
 
 export function pathToUrl(filePath: string): string {
-	const url: string = `/${filePath}`;
+	const url: string = filePath.startsWith("/") ? filePath : `/${filePath}`;
 
 	if (url.length === 1) {
 		return url;
@@ -44,7 +44,8 @@ export function handleParams(token: string): string {
 		.replace(wildCardRouteRegex, () => "*")
 		.replace(squareBracketRegex, (_, match) => `:${String(match)}`)
 		.replace(multipleParamRegex, "-:")
-		.replace(routeParamRegex, "/:");
+		.replace(routeParamRegex, "/:")
+		.replace("//", "/");
 }
 
 export function extractCatchAll(routePath: string) {
