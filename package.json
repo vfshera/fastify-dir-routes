@@ -20,7 +20,8 @@
     "ts:example": "tsx watch ./examples/typescript/server.ts",
     "release": "pnpm run build && changeset publish",
     "pre-commit": "lint-staged",
-    "lint": "tsc"
+    "lint": "tsc",
+    "test": "vitest"
   },
   "keywords": [
     "fastify-dir-routes",
@@ -55,7 +56,8 @@
     "lint-staged": "^15.2.2",
     "tsup": "^8.0.2",
     "tsx": "^4.10.3",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
   },
   "peerDependencies": {
     "fastify": ">=3.0.0"
