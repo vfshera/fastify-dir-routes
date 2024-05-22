@@ -1,5 +1,11 @@
 # @vfshera/fastify-dir-routes
 
+## 0.2.3
+
+### Patch Changes
+
+- 412c71b: fix double slash replacement
+
 ## 0.2.2
 
 ### Patch Changes
